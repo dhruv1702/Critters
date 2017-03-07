@@ -25,7 +25,8 @@ public abstract class Critter {
 	private static String myPackage;
 	private	static List<Critter> population = new java.util.ArrayList<Critter>();
 	private static List<Critter> babies = new java.util.ArrayList<Critter>();
-
+	
+	
 	// Gets the package name.  This assumes that Critter and its subclasses are all in the same package.
 	static {
 		myPackage = Critter.class.getPackage().toString().split(" ")[1];
@@ -50,14 +51,136 @@ public abstract class Critter {
 	private int x_coord;
 	private int y_coord;
 	
+	private final int moveX(int steps) {
+		if ((steps + x_coord) < 0){
+			return (Params.world_width - steps);
+		} 
+		else if ((steps + x_coord) > (Params.world_width - 1)) {
+			return (steps - 1);
+		}
+		else {
+			return x_coord += steps;
+		}
+	}
+
+	private final int moveY(int steps) {
+		if ((steps + y_coord) < 0){
+			return (Params.world_height - steps);
+		} 
+		else if ((steps + y_coord) > (Params.world_height - 1)) {
+			return (steps - 1);
+		}
+		else {
+			return y_coord += steps;
+		}
+	}
+
+	
 	protected final void walk(int direction) {
+		if (direction == 0){
+			x_coord = moveX(1);
+		}
+		else if (direction == 1) {
+			x_coord = moveX(1);
+			y_coord = moveY(-1);
+		}
+		else if (direction == 2) {
+			y_coord = moveY(-1);
+		}
+		else if (direction == 3) {
+			x_coord = moveX(-1);
+			y_coord = moveY(-1);
+		}
+		else if (direction == 4) {
+			x_coord = moveX(-1);
+		}
+		else if (direction == 5) {
+			x_coord = moveX(-1);
+			y_coord = moveY(1);
+		}
+		else if (direction == 6) {
+			y_coord = moveY(1);
+		}
+		else if (direction == 7) {
+			x_coord = moveX(1);
+			y_coord = moveY(1);
+		}
+		energy = energy - Params.walk_energy_cost;
 	}
 	
 	protected final void run(int direction) {
-		
+		if (direction == 0){
+			x_coord = moveX(1);
+		}
+		else if (direction == 1) {
+			x_coord = moveX(1);
+			y_coord = moveX(-1);
+		}
+		else if (direction == 2) {
+			y_coord = moveX(-1);
+		}
+		else if (direction == 3) {
+			x_coord = moveX(-1);
+			y_coord = moveX(-1);
+		}
+		else if (direction == 4) {
+			x_coord = moveX(-1);
+		}
+		else if (direction == 5) {
+			x_coord = moveX(-1);
+			y_coord = moveX(1);
+		}
+		else if (direction == 6) {
+			y_coord = moveX(1);
+		}
+		else if (direction == 7) {
+			x_coord = moveX(1);
+			y_coord = moveX(1);
+		}
+		energy = energy - Params.run_energy_cost;
 	}
 	
 	protected final void reproduce(Critter offspring, int direction) {
+		if(this.energy < Params.min_reproduce_energy) {
+			return;
+		}
+		offspring.energy = (this.energy /2);
+		energy = (int) Math.ceil(this.energy / 2);
+		
+		if (direction == 0){
+			offspring.x_coord = moveX(1);
+			offspring.y_coord = this.y_coord;
+		}
+		else if (direction == 1) {
+			offspring.x_coord = moveX(1);
+			offspring.y_coord = moveY(-1);
+		}
+		else if (direction == 2) {
+			offspring.x_coord = this.x_coord;
+			offspring.y_coord = moveY(-1);
+		}
+		else if (direction == 3) {
+			offspring.x_coord = moveX(-1);
+			offspring.y_coord = moveY(-1);
+		}
+		else if (direction == 4) {
+			offspring.x_coord = moveX(-1);
+			offspring.y_coord = this.y_coord;
+		}
+		else if (direction == 5) {
+			offspring.x_coord = moveX(-1);
+			offspring.y_coord = moveY(1);
+		}
+		else if (direction == 6) {
+			offspring.x_coord = this.x_coord;
+			offspring.y_coord = moveY(1);
+		}
+		else if (direction == 7) {
+			offspring.x_coord = moveX(1);
+			offspring.y_coord = moveY(1);
+		}
+		babies.add(offspring);
+		
 	}
 
 	public abstract void doTimeStep();

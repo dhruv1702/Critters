@@ -71,7 +71,96 @@ public class Main {
         /* Write your code below. */
         
         // System.out.println("GLHF");
+        String command = kb.nextLine();
+        String commandArray[] = command.split(" ");
+        if (commandArray[0] == "quit"){
+        	if (commandArray.length > 1) {
+				System.out.println("error processing: " + command);
+			}
+        	return;
+        }
         
+        else if (commandArray[0] == "show"){
+        	if (commandArray.length > 1) {
+				System.out.println("error processing: " + command);
+			}
+        	Critter.displayWorld();
+        }
+        
+        else if (commandArray[0] == "step"){
+        	if (commandArray.length > 2) {
+				System.out.println("error processing: " + command);
+			}
+        	try{
+        		int steps = Integer.parseInt(commandArray[1]);
+        		for (int i = 0; i < steps; i++){
+        			Critter.worldTimeStep();
+        		}
+        	}
+        	catch (IndexOutOfBoundsException e) {
+				Critter.worldTimeStep();
+			} 
+        	catch (NumberFormatException e ) {
+				System.out.println("error processing: " + command);
+			}
+        }
+        
+        else if (commandArray[0] == "seed"){
+        	if (commandArray.length > 2) {
+				System.out.println("error processing: " + command);
+			}
+        	
+        	try{
+        		int seedNumber = Integer.parseInt(commandArray[1]);
+        		Critter.setSeed(seedNumber);
+        	}
+        	catch (IndexOutOfBoundsException e) {
+				Critter.worldTimeStep();
+			} 
+        	catch (NumberFormatException e ) {
+				System.out.println("error processing: " + command);
+			}
+        	
+        }
+        
+        else if (commandArray[0] == "make"){
+        	if (commandArray.length == 2) {
+				try {
+					Critter.makeCritter(commandArray[1]);
+				} 
+				catch (InvalidCritterException e) {
+					System.out.println("error processing: " + command);
+				}
+        	}
+        	else if (commandArray.length == 3){
+        		int count = Integer.parseInt(commandArray[2]);
+        		for (int i = 0; i < count; i++) {
+					try {
+						Critter.makeCritter(commandArray[1]);
+					} 
+					catch (InvalidCritterException e) {
+						System.out.println("error processing: " + command);
+						break;
+					}
+        		}
+        	}
+        	else {
+        		System.out.println("error processing: " + command);
+        	}
+        }
+        
+        else if (commandArray[0] == "stats"){
+        	if (commandArray.length != 2){
+        		System.out.println("error processing: " + command);
+        	}
+        	else{
+        		String critterName = commandArray[1];
+        		String className = myPackage + "." + critterName;
+        		//TODO
+        		//Critter.getInstances(commandArray[1]);
+        	}
+        	
+        }
         /* Write your code above */
         System.out.flush();
 
