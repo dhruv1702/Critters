@@ -26,6 +26,10 @@ public abstract class Critter {
 	private	static List<Critter> population = new java.util.ArrayList<Critter>();
 	private static List<Critter> babies = new java.util.ArrayList<Critter>();
 	
+	private boolean alive;
+	private boolean isAlive() {
+		return alive;
+	}
 	
 	// Gets the package name.  This assumes that Critter and its subclasses are all in the same package.
 	static {
@@ -107,6 +111,7 @@ public abstract class Critter {
 		}
 		energy = energy - Params.walk_energy_cost;
 	}
+	
 	
 	protected final void run(int direction) {
 		if (direction == 0){
@@ -292,10 +297,47 @@ public abstract class Critter {
 	 */
 	public static void clearWorld() {
 		// Complete this method.
+		population.clear();
+		babies.clear();
+	}
+	private static void individualTimeSteps(){
+		for (Critter critter : population){
+			critter.doTimeStep();
+			critter.energy -= Params.rest_energy_cost;
+			if (critter.energy < 0){
+				critter.alive = false;
+			}
+			else{
+				critter.alive = true;
+			}
+		}
+	}
+	private static void removeDead(){
+		for (Critter critter : population){
+			if (critter.alive == false || critter.energy < 0){
+				population.remove(critter);
+			}
+		}
+	}
+	
+	private static void refreshAlgae() {
+		for (int i = 0; i < Params.refresh_algae_count; i++) {
+			try {
+				Critter.makeCritter("Algae");
+			} catch (InvalidCritterException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public static void worldTimeStep() {
 		// Complete this method.
+		individualTimeSteps();
+		population.addAll(babies);
+		babies.clear();
+		removeDead();
+		refreshAlgae();
+		
 	}
 	
 	public static void displayWorld() {
