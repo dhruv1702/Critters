@@ -13,6 +13,7 @@ package assignment4;
  */
 
 
+import java.lang.reflect.*;
 import java.util.List;
 
 /* see the PDF for descriptions of the methods and fields in this class
@@ -202,6 +203,42 @@ public abstract class Critter {
 	 * @throws InvalidCritterException
 	 */
 	public static void makeCritter(String critter_class_name) throws InvalidCritterException {
+		Class<?> myCritter = null;
+		Constructor<?> constructor = null;
+		Object instanceOfMyCritter = null;
+
+		try {
+			myCritter = Class.forName(critter_class_name); 	// Class object of specified name
+		} catch (ClassNotFoundException e) {
+			throw new InvalidCritterException(critter_class_name);
+		}
+		try {
+			constructor = myCritter.getConstructor();		// No-parameter constructor object
+			instanceOfMyCritter = constructor.newInstance();	// Create new object using constructor
+		} catch (InstantiationException e1) {											// various exceptions 
+			// Do whatever is needed to handle the various exceptions here -- e.g. rethrow Exception
+			throw new InvalidCritterException(critter_class_name);
+		} 
+		catch (NoSuchMethodException e) {
+			throw new InvalidCritterException(critter_class_name);
+		} 
+		catch (SecurityException e) {
+			throw new InvalidCritterException(critter_class_name);
+		}
+		catch(IllegalAccessException e2){
+			throw new InvalidCritterException(critter_class_name);
+		}
+		catch(IllegalArgumentException e3){
+			throw new InvalidCritterException(critter_class_name);
+		} 
+		catch (InvocationTargetException e) {
+			throw new InvalidCritterException(critter_class_name);
+		}
+		Critter me = (Critter)instanceOfMyCritter;		// Cast to Critter
+		me.energy=Params.start_energy;
+		me.x_coord=getRandomInt(Params.world_width);
+		me.y_coord=getRandomInt(Params.world_height);
+		population.add(me);
 	}
 	
 	/**
@@ -323,7 +360,7 @@ public abstract class Critter {
 	private static void refreshAlgae() {
 		for (int i = 0; i < Params.refresh_algae_count; i++) {
 			try {
-				Critter.makeCritter("Algae");
+				Critter.makeCritter(myPackage+"."+"Algae");
 			} catch (InvalidCritterException e) {
 				e.printStackTrace();
 			}
@@ -342,5 +379,30 @@ public abstract class Critter {
 	
 	public static void displayWorld() {
 		// Complete this method.
+		System.out.print("+");
+		for(int l=0;l<Params.world_width;l++){
+			System.out.print("-");
+		}
+		System.out.println("+");
+		for(int y=0;y<Params.world_height;y++){
+			for(int x=0;x<Params.world_width;x++){
+				String s=" ";
+				if(x==0)
+					System.out.print("|");
+				for(Critter c:population){
+					if((c.x_coord==x)&&(c.y_coord==y)){
+						s=c.toString();
+					}
+				}
+				System.out.print(s);
+				if(x==Params.world_width-1)
+					System.out.println("|");
+			}
+		}
+		System.out.print("+");
+		for(int l=0;l<Params.world_width;l++){
+			System.out.print("-");
+		}
+		System.out.println("+");
 	}
 }
