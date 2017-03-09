@@ -1,4 +1,5 @@
 package assignment4;
+
 /* CRITTERS Critter.java
  * EE422C Project 4 submission by
  * Replace <...> with your actual data.
@@ -27,6 +28,7 @@ public abstract class Critter {
 	private	static List<Critter> population = new java.util.ArrayList<Critter>();
 	private static List<Critter> babies = new java.util.ArrayList<Critter>();
 	
+	protected boolean hasMoved;
 	private boolean alive;
 	private boolean isAlive() {
 		return alive;
@@ -82,6 +84,10 @@ public abstract class Critter {
 
 	
 	protected final void walk(int direction) {
+		if (hasMoved = true){
+			energy -= Params.walk_energy_cost;
+			return;
+		}
 		if (direction == 0){
 			x_coord = moveX(1);
 		}
@@ -110,11 +116,16 @@ public abstract class Critter {
 			x_coord = moveX(1);
 			y_coord = moveY(1);
 		}
-		energy = energy - Params.walk_energy_cost;
+		energy -= Params.walk_energy_cost;
+		hasMoved = true;
 	}
 	
 	
 	protected final void run(int direction) {
+		if (hasMoved = true){
+			energy -= Params.run_energy_cost;
+			return;
+		}
 		if (direction == 0){
 			x_coord = moveX(1);
 		}
@@ -143,7 +154,8 @@ public abstract class Critter {
 			x_coord = moveX(1);
 			y_coord = moveX(1);
 		}
-		energy = energy - Params.run_energy_cost;
+		energy -= Params.run_energy_cost;
+		hasMoved = true;
 	}
 	
 	protected final void reproduce(Critter offspring, int direction) {
@@ -250,6 +262,18 @@ public abstract class Critter {
 	public static List<Critter> getInstances(String critter_class_name) throws InvalidCritterException {
 		List<Critter> result = new java.util.ArrayList<Critter>();
 	
+		String className = myPackage + "." + critter_class_name;
+		for (Critter crit : population) {
+			Class<?> crit_class = null;
+			try {
+				crit_class = Class.forName(className);
+			} catch (Exception e) {
+				throw new InvalidCritterException(critter_class_name);
+			}
+			if (crit_class.isInstance(crit)) {
+				result.add(crit);
+			}
+		}
 		return result;
 	}
 	
@@ -339,6 +363,7 @@ public abstract class Critter {
 	}
 	private static void individualTimeSteps(){
 		for (Critter critter : population){
+			critter.hasMoved = false;
 			critter.doTimeStep();
 			critter.energy -= Params.rest_energy_cost;
 			if (critter.energy < 0){
@@ -374,7 +399,7 @@ public abstract class Critter {
 		babies.clear();
 		removeDead();
 		refreshAlgae();
-		
+		//TODO ENCOUNTERS/FIGHTS
 	}
 	
 	public static void displayWorld() {

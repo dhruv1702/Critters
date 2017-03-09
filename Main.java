@@ -1,4 +1,5 @@
 package assignment4;
+
 /* CRITTERS Main.java
  * EE422C Project 4 submission by
  * Replace <...> with your actual data.
@@ -90,7 +91,7 @@ public class Main {
 //ONLY FOR STEPS 1&2!!!! TAKE OUT LATER!!!
         
         // System.out.println("GLHF");
-        boolean end=false;
+        boolean end = false;
         while(!end){
 	        String command = kb.nextLine();
 	        String commandArray[] = command.split(" ");
