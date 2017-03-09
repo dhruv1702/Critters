@@ -362,7 +362,7 @@ public abstract class Critter {
 			critter.hasMoved = false;
 			critter.doTimeStep();
 			critter.energy -= Params.rest_energy_cost;
-			if (critter.energy < 0){
+			if (critter.energy <= 0){
 				critter.alive = false;
 			}
 			else{
@@ -371,11 +371,13 @@ public abstract class Critter {
 		}
 	}
 	private static void removeDead(){
+		ArrayList<Critter> deadCritters = new ArrayList<>();
 		for (Critter critter : population){
-			if (critter.alive == false || critter.energy < 0){
-				population.remove(critter);
+			if (critter.alive == false || critter.energy <= 0){
+				deadCritters.add(critter);
 			}
 		}
+		population.removeAll(deadCritters);
 	}
 	
 	private static void refreshAlgae() {
@@ -401,27 +403,61 @@ public abstract class Critter {
 		return fighters;
 	}
 	
+	private boolean sameLocation(Critter c1){
+		if (this.x_coord == c1.x_coord && this.y_coord == c1.y_coord){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
 	private static void resolveEncounters(){
 		ArrayList<Critter> fighters = new ArrayList<>();
 		for (Critter c1 : population){
 			fighters = checkEncounters(c1);
 			if (!fighters.isEmpty()){
 				for (Critter c2 : fighters){
-					//TODO
+					int c1roll, c2roll;
+					boolean c1Fight = c1.fight(c2.toString());
+					boolean c2Fight = c2.fight(c1.toString());
+					while (c1.alive && c2.alive && c1.sameLocation(c2)){
+						if (c1Fight == true){
+							c1roll = Critter.getRandomInt(c1.getEnergy());
+						}
+						else {
+							c1roll = 0;
+						}
+						if (c2Fight == true){
+							c2roll = Critter.getRandomInt(c2.getEnergy());
+						}
+						else {
+							c2roll = 0;
+						}
+						
+						if (c1roll > c2roll){
+							c1.energy += c2.energy / 2;
+							c2.energy = 0;
+							c2.alive = false;
+						}
+						else {
+							c2.energy += c1.energy / 2;
+							c1.energy = 0;
+							c1.alive = false;
+						}
+					}
 				}
 			}
 		}
-		
 	}
 	
 	public static void worldTimeStep() {
-		// Complete this method.
 		individualTimeSteps();
 		population.addAll(babies);
 		babies.clear();
+		resolveEncounters();
 		removeDead();
 		refreshAlgae();
-		//TODO ENCOUNTERS/FIGHTS
 	}
 	
 	public static void displayWorld() {

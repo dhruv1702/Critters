@@ -10,8 +10,10 @@
  * Spring 2017
  */
 package assignment4;
+import java.util.List;
 import java.util.Scanner;
 import java.io.*;
+import java.lang.reflect.Method;
 
 
 /*
@@ -69,17 +71,17 @@ public class Main {
         /* Write your code below. */
         
 //ONLY FOR STEPS 1&2!!!! TAKE OUT LATER!!!
-        for(int i=0;i<100;i++){
+        for (int i = 0; i < 100; i++){
         	try {
-				Critter.makeCritter(myPackage+"."+"Algae");
+				Critter.makeCritter(myPackage + "." + "Algae");
 			} 
 			catch (InvalidCritterException e) {
 				System.out.println("error processing: " + "Algae");
 			}
         }
-        for(int j=0;j<25;j++){
+        for (int j = 0; j < 25; j++){
         	try {
-				Critter.makeCritter(myPackage+"."+"Craig");
+				Critter.makeCritter(myPackage + "." + "Craig");
 			} 
 			catch (InvalidCritterException e) {
 				System.out.println("error processing: " + "Craig");
@@ -96,7 +98,7 @@ public class Main {
 	        	if (commandArray.length > 1) {
 					System.out.println("error processing: " + command);
 				}
-	        	end=true;
+	        	end = true;
 	        }
 	        
 	        else if (commandArray[0].equals("show")){
@@ -156,7 +158,8 @@ public class Main {
 	        		int count = Integer.parseInt(commandArray[2]);
 	        		for (int i = 0; i < count; i++) {
 						try {
-							Critter.makeCritter(commandArray[1]);
+							String s = myPackage + "." + commandArray[1];
+							Critter.makeCritter(s);
 						} 
 						catch (InvalidCritterException e) {
 							System.out.println("error processing: " + command);
@@ -175,9 +178,27 @@ public class Main {
 	        	}
 	        	else{
 	        		String critterName = commandArray[1];
-	        		String className = myPackage + "." + critterName;
-	        		//TODO
-	        		//Critter.getInstances(commandArray[1]);
+	
+	        		if (critterName.equals("Critter")) {
+						System.out.println("error processing: " + command);
+					} 
+	        		else {
+						String className = myPackage + "." + critterName;
+						try {
+							List<Critter> list = Critter.getInstances(critterName);
+							Class<?> critter_class = Class.forName(className);
+							Method method = critter_class.getMethod("runStats", List.class);
+							Object critterInstance = critter_class.newInstance();
+							method.invoke(critterInstance, list);
+						} catch (NoClassDefFoundError e) {
+							System.out.println("error processing: " + command);
+						} catch (InvalidCritterException e) {
+							System.out.println("error processing: " + command);
+						} catch (Exception e) {
+							System.out.println("error processing: " + command);
+						} 
+					}
+
 	        	}
 	        	
 	        }

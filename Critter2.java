@@ -25,7 +25,7 @@ public class Critter2 extends Critter {
 	
 	@Override 
 	public String toString() {
-		return "B"; 
+		return "2"; 
 	}
 	
 	
@@ -52,9 +52,9 @@ public class Critter2 extends Critter {
 		int avgEnergy = 0;
 		for (Object obj : critter2) {
 			numCrit2 += 1;
-			Critter2 r = (Critter2) obj;
-			avgAge += r.age;
-			avgEnergy += r.getEnergy();
+			Critter2 c = (Critter2) obj;
+			avgAge += c.age;
+			avgEnergy += c.getEnergy();
 		}
 		avgAge /= numCrit2;
 		avgEnergy /= numCrit2;
