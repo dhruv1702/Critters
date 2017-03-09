@@ -12,6 +12,7 @@
 package assignment4;
 
 import java.lang.reflect.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /* see the PDF for descriptions of the methods and fields in this class
@@ -385,6 +386,32 @@ public abstract class Critter {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	private static ArrayList<Critter> checkEncounters(Critter c1){
+		// add all critters that are in the same location as c1 to fighters ArrayList
+		ArrayList<Critter> fighters = new ArrayList<>();
+		for (Critter c2 : population){
+			if (!c2.equals(c1)){
+				if (c1.x_coord == c2.x_coord && c1.y_coord == c2.y_coord){
+					fighters.add(c2);
+				}
+			}
+		}
+		return fighters;
+	}
+	
+	private static void resolveEncounters(){
+		ArrayList<Critter> fighters = new ArrayList<>();
+		for (Critter c1 : population){
+			fighters = checkEncounters(c1);
+			if (!fighters.isEmpty()){
+				for (Critter c2 : fighters){
+					//TODO
+				}
+			}
+		}
+		
 	}
 	
 	public static void worldTimeStep() {
