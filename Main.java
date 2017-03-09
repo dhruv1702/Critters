@@ -93,6 +93,7 @@ public class Main {
         // System.out.println("GLHF");
         boolean end = false;
         while(!end){
+        	System.out.print("critters>");
 	        String command = kb.nextLine();
 	        String commandArray[] = command.split(" ");
 	        

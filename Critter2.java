@@ -20,7 +20,6 @@ public class Critter2 extends Critter {
 	
 	
 	
-	private int direction;
 	private int age;
 	
 	@Override 
@@ -30,19 +29,34 @@ public class Critter2 extends Critter {
 	
 	
 	public Critter2() {
-		direction = Critter.getRandomInt(8);
 		age = 0;
 	}
 	
 	@Override
 	public void doTimeStep() {
-		// TODO Auto-generated method stub
+		age++;
+		if (age % 2 == 0 && getEnergy() > 80){
+			Critter2 babyCritter2 = new Critter2();
+			reproduce(babyCritter2, Critter.getRandomInt(8));
+		}
+		if (getEnergy() > 80){
+			run(Critter.getRandomInt(8));
+		}
+		else{
+			walk(Critter.getRandomInt(8));
+		}
 
 	}
 
 	@Override
 	public boolean fight(String oponent) {
-		// TODO Auto-generated method stub
+		if (getEnergy() >= 50){
+			return true;
+		}
+		else if (this.hasMoved == false){
+			walk(getRandomInt(8));
+			return false;
+		}
 		return false;
 	}
 

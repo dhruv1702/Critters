@@ -20,7 +20,6 @@ public class Critter1 extends Critter {
 	 * If Critter1 does not have enough energy to run, it will stay in its position. */
 	
 	
-	private int direction;
 	private int age;
 	
 	@Override 
@@ -29,7 +28,6 @@ public class Critter1 extends Critter {
 	}
 	
 	public Critter1() {
-		direction = Critter.getRandomInt(8);
 		age = 0;
 	}
 	

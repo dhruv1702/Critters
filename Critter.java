@@ -21,14 +21,7 @@ import java.util.List;
  */
 
 
-/**
- * @author Dhruv
- *
- */
-/**
- * @author Dhruv
- *
- */
+
 public abstract class Critter {
 	private static String myPackage;
 	private	static List<Critter> population = new java.util.ArrayList<Critter>();
