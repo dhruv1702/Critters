@@ -1,18 +1,15 @@
-package assignment4;
-
 /* CRITTERS Main.java
  * EE422C Project 4 submission by
- * Replace <...> with your actual data.
- * <Student1 Name>
- * <Student1 EID>
- * <Student1 5-digit Unique No.>
- * <Student2 Name>
- * <Student2 EID>
- * <Student2 5-digit Unique No.>
+ * Dhruv Verma
+ * dv7229
+ * 16230
+ * Daniel Laveman
+ * del824
+ * 16230
  * Slip days used: <0>
- * Fall 2016
+ * Spring 2017
  */
-
+package assignment4;
 import java.util.Scanner;
 import java.io.*;
 
@@ -148,7 +145,7 @@ public class Main {
 	        else if (commandArray[0].equals("make")){
 	        	if (commandArray.length == 2) {
 					try {
-						String s=myPackage+"."+commandArray[1];
+						String s = myPackage + "." + commandArray[1];
 						Critter.makeCritter(s);
 					} 
 					catch (InvalidCritterException e) {

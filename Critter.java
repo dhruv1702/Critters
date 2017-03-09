@@ -1,18 +1,15 @@
-package assignment4;
-
 /* CRITTERS Critter.java
  * EE422C Project 4 submission by
- * Replace <...> with your actual data.
- * <Student1 Name>
- * <Student1 EID>
- * <Student1 5-digit Unique No.>
- * <Student2 Name>
- * <Student2 EID>
- * <Student2 5-digit Unique No.>
+ * Dhruv Verma
+ * dv7229
+ * 16230
+ * Daniel Laveman
+ * del824
+ * 16230
  * Slip days used: <0>
- * Fall 2016
+ * Spring 2017
  */
-
+package assignment4;
 
 import java.lang.reflect.*;
 import java.util.List;
@@ -82,7 +79,6 @@ public abstract class Critter {
 		}
 	}
 
-	
 	protected final void walk(int direction) {
 		if (hasMoved = true){
 			energy -= Params.walk_energy_cost;
@@ -357,7 +353,6 @@ public abstract class Critter {
 	 * Clear the world of all critters, dead and alive
 	 */
 	public static void clearWorld() {
-		// Complete this method.
 		population.clear();
 		babies.clear();
 	}
@@ -403,7 +398,6 @@ public abstract class Critter {
 	}
 	
 	public static void displayWorld() {
-		// Complete this method.
 		System.out.print("+");
 		for(int l=0;l<Params.world_width;l++){
 			System.out.print("-");
