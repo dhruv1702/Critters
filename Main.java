@@ -9,6 +9,7 @@
  * Slip days used: <0>
  * Spring 2017
  */
+
 package assignment4;
 import java.util.List;
 import java.util.Scanner;
@@ -94,6 +95,7 @@ public class Main {
         while(!end){
 	        String command = kb.nextLine();
 	        String commandArray[] = command.split(" ");
+	        
 	        if (commandArray[0].equals("quit")){
 	        	if (commandArray.length > 1) {
 					System.out.println("error processing: " + command);

@@ -13,8 +13,8 @@ package assignment4;
 
 public class Critter2 extends Critter {
 	
-	/* Dhruv Verma
-	 * .
+	/* Dhruv's Critter
+	 * Critter2 will reproduce every 2 time steps if it has more than 80 energy.
 	 * . 
 	 * If Critter2 does not have enough energy to run, it will stay in its position. */
 	
@@ -50,16 +50,16 @@ public class Critter2 extends Critter {
 		int avgAge = 0;
 		int numCrit2 = 0;
 		int avgEnergy = 0;
-		for (Object obj : critter2) {
+		for (Critter crit : critter2) {
 			numCrit2 += 1;
-			Critter2 c = (Critter2) obj;
+			Critter2 c = (Critter2) crit;
 			avgAge += c.age;
 			avgEnergy += c.getEnergy();
 		}
 		avgAge /= numCrit2;
 		avgEnergy /= numCrit2;
 		System.out.print("" + numCrit2 + " total Critter1s");
-		System.out.print("Average age: " + avgAge + "       ");
+		System.out.print("       Average age: " + avgAge + "       ");
 		System.out.print("Average energy: " + avgEnergy + "\n");
 	}
 }

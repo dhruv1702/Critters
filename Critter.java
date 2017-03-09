@@ -21,6 +21,14 @@ import java.util.List;
  */
 
 
+/**
+ * @author Dhruv
+ *
+ */
+/**
+ * @author Dhruv
+ *
+ */
 public abstract class Critter {
 	private static String myPackage;
 	private	static List<Critter> population = new java.util.ArrayList<Critter>();
@@ -56,6 +64,11 @@ public abstract class Critter {
 	private int x_coord;
 	private int y_coord;
 	
+	
+	/**
+	 * @param steps
+	 * @return new X position
+	 */
 	private final int moveX(int steps) {
 		if ((steps + x_coord) < 0){
 			return (Params.world_width - steps);
@@ -68,6 +81,10 @@ public abstract class Critter {
 		}
 	}
 
+	/**
+	 * @param steps
+	 * @return new Y position
+	 */
 	private final int moveY(int steps) {
 		if ((steps + y_coord) < 0){
 			return (Params.world_height - steps);
@@ -80,6 +97,11 @@ public abstract class Critter {
 		}
 	}
 
+	
+	/**
+	 * move 1 step in direction
+	 * @param direction
+	 */
 	protected final void walk(int direction) {
 		if (hasMoved = true){
 			energy -= Params.walk_energy_cost;
@@ -118,6 +140,10 @@ public abstract class Critter {
 	}
 	
 	
+	/**
+	 * move 2 steps in direction
+	 * @param direction
+	 */
 	protected final void run(int direction) {
 		if (hasMoved = true){
 			energy -= Params.run_energy_cost;
@@ -155,6 +181,11 @@ public abstract class Critter {
 		hasMoved = true;
 	}
 	
+	/**
+	 * Create offspring in this direction
+	 * @param offspring
+	 * @param direction
+	 */
 	protected final void reproduce(Critter offspring, int direction) {
 		if(this.energy < Params.min_reproduce_energy) {
 			return;
@@ -244,9 +275,9 @@ public abstract class Critter {
 			throw new InvalidCritterException(critter_class_name);
 		}
 		Critter me = (Critter)instanceOfMyCritter;		// Cast to Critter
-		me.energy=Params.start_energy;
-		me.x_coord=getRandomInt(Params.world_width);
-		me.y_coord=getRandomInt(Params.world_height);
+		me.energy = Params.start_energy;
+		me.x_coord = getRandomInt(Params.world_width);
+		me.y_coord = getRandomInt(Params.world_height);
 		population.add(me);
 	}
 	
@@ -357,6 +388,11 @@ public abstract class Critter {
 		population.clear();
 		babies.clear();
 	}
+	
+	
+	/**
+	 * Call each critters doTimeStep method
+	 */
 	private static void individualTimeSteps(){
 		for (Critter critter : population){
 			critter.hasMoved = false;
@@ -370,6 +406,11 @@ public abstract class Critter {
 			}
 		}
 	}
+	
+	
+	/**
+	 * Remove all dead critters from population
+	 */
 	private static void removeDead(){
 		ArrayList<Critter> deadCritters = new ArrayList<>();
 		for (Critter critter : population){
@@ -380,18 +421,26 @@ public abstract class Critter {
 		population.removeAll(deadCritters);
 	}
 	
+	
+	/**
+	 * Add Algae each time step
+	 */
 	private static void refreshAlgae() {
 		for (int i = 0; i < Params.refresh_algae_count; i++) {
 			try {
-				Critter.makeCritter(myPackage+"."+"Algae");
+				Critter.makeCritter(myPackage + "." + "Algae");
 			} catch (InvalidCritterException e) {
 				e.printStackTrace();
 			}
 		}
 	}
 	
+	
+	/**
+	 * @param c1
+	 * @return ArrayList<Critter> of all critters in the same location as c1
+	 */
 	private static ArrayList<Critter> checkEncounters(Critter c1){
-		// add all critters that are in the same location as c1 to fighters ArrayList
 		ArrayList<Critter> fighters = new ArrayList<>();
 		for (Critter c2 : population){
 			if (!c2.equals(c1)){
@@ -403,6 +452,11 @@ public abstract class Critter {
 		return fighters;
 	}
 	
+	
+	/**
+	 * @param c1
+	 * @return true if c1 is in same location as critter
+	 */
 	private boolean sameLocation(Critter c1){
 		if (this.x_coord == c1.x_coord && this.y_coord == c1.y_coord){
 			return true;
@@ -412,6 +466,10 @@ public abstract class Critter {
 		}
 	}
 	
+	
+	/**
+	 * Resolve all encounters between critters in the same location
+	 */
 	private static void resolveEncounters(){
 		ArrayList<Critter> fighters = new ArrayList<>();
 		for (Critter c1 : population){
@@ -451,6 +509,10 @@ public abstract class Critter {
 		}
 	}
 	
+	
+	/**
+	 * Do everything that must be done in each time step
+	 */
 	public static void worldTimeStep() {
 		individualTimeSteps();
 		population.addAll(babies);
@@ -460,29 +522,33 @@ public abstract class Critter {
 		refreshAlgae();
 	}
 	
+	
+	/**
+	 * Display World
+	 */
 	public static void displayWorld() {
 		System.out.print("+");
-		for(int l=0;l<Params.world_width;l++){
+		for(int l = 0;l < Params.world_width; l++){
 			System.out.print("-");
 		}
 		System.out.println("+");
-		for(int y=0;y<Params.world_height;y++){
-			for(int x=0;x<Params.world_width;x++){
+		for(int y = 0; y < Params.world_height; y++){
+			for(int x = 0; x < Params.world_width; x++){
 				String s=" ";
-				if(x==0)
+				if(x == 0)
 					System.out.print("|");
 				for(Critter c:population){
-					if((c.x_coord==x)&&(c.y_coord==y)){
-						s=c.toString();
+					if((c.x_coord == x)&&(c.y_coord == y)){
+						s = c.toString();
 					}
 				}
 				System.out.print(s);
-				if(x==Params.world_width-1)
+				if(x == Params.world_width - 1)
 					System.out.println("|");
 			}
 		}
 		System.out.print("+");
-		for(int l=0;l<Params.world_width;l++){
+		for(int l=0; l < Params.world_width; l++){
 			System.out.print("-");
 		}
 		System.out.println("+");

@@ -13,10 +13,10 @@ package assignment4;
 
 public class Critter1 extends Critter {
 	
-	/* Dhruv Verma
-	 * Critter1 only runs in a random direction each time-step.
+	/* Dhruv's Critter
+	 * Critter1 is a marathoner who only runs in a random direction each time-step.
 	 * If it has not moved, it will run from all critters except algae which it will fight. If not, it will fight.
-	 * If Critter1 has more than 50 energy it will reproduce. 
+	 * If Critter1 has more than 100 energy it will reproduce. 
 	 * If Critter1 does not have enough energy to run, it will stay in its position. */
 	
 	
@@ -37,7 +37,7 @@ public class Critter1 extends Critter {
 	@Override
 	public void doTimeStep() {
 		age++;
-		if (getEnergy() > 50){
+		if (getEnergy() > 100){
 			Critter1 babyCritter1 = new Critter1();
 			reproduce(babyCritter1, Critter.getRandomInt(8));
 		}
@@ -64,21 +64,20 @@ public class Critter1 extends Critter {
 	}
 	
 	
-	
 	public static void runStats(java.util.List<Critter> critter1) {
 		int avgAge = 0;
 		int numCrit1 = 0;
 		int avgEnergy = 0;
-		for (Object obj : critter1) {
+		for (Critter crit : critter1) {
 			numCrit1 += 1;
-			Critter1 c = (Critter1) obj;
+			Critter1 c = (Critter1) crit;
 			avgAge += c.age;
 			avgEnergy += c.getEnergy();
 		}
 		avgAge /= numCrit1;
 		avgEnergy /= numCrit1;
 		System.out.print("" + numCrit1 + " total Critter1s");
-		System.out.print("Average age: " + avgAge + "       ");
+		System.out.print("       Average age: " + avgAge + "       ");
 		System.out.print("Average energy: " + avgEnergy + "\n");
 	}
 
